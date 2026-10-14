@@ -3,133 +3,287 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ben Voliva · Projects</title>
-  <meta name="description" content="Projects by Ben Voliva: interactive web tools built from real data.">
+  <title>Ben Voliva</title>
+  <meta name="description" content="Ben Voliva builds interactive web tools from real data.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       color-scheme: light;
-      --sky: #eef2fc;
-      --surface: #ffffff;
-      --wash: #f3f6fd;
-      --ink: #141a33;
-      --ink-2: #4a5373;
-      --ink-3: #6b7491;
-      --accent: #2f62e6;
-      --accent-wash: #e8eefd;
-      --shadow: 0 1px 2px rgba(31, 45, 92, 0.06), 0 10px 30px rgba(31, 45, 92, 0.10);
+      --paper: #f4f3f0;
+      --ink: #111111;
+      --grey: #9b9a96;
+      --rule: #dddbd6;
+      --gutter: clamp(16px, 2.2vw, 32px);
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      background: var(--sky);
+      background: var(--paper);
       color: var(--ink);
-      font: 16px/1.55 "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+      font: 400 15px/1.45 "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      letter-spacing: -0.01em;
       -webkit-font-smoothing: antialiased;
     }
-    a { color: inherit; }
-    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-    .page { max-width: 1080px; margin: 0 auto; padding: 72px 24px 56px; }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 1.5px solid var(--ink); outline-offset: 4px; }
+    img { display: block; max-width: 100%; height: auto; }
 
-    header { max-width: 640px; }
-    h1 { margin: 0; font-size: clamp(34px, 6vw, 48px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
-    .intro { margin: 14px 0 0; color: var(--ink-2); font-size: 18px; }
-    .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 16px;
-      border-radius: 999px;
-      background: var(--surface);
-      box-shadow: var(--shadow);
-      color: var(--ink);
+    /* ---- corners: mark top left, menu top right, footnote bottom left ---- */
+    .top {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 10;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: var(--gutter);
+      pointer-events: none;
+    }
+    .top > * { pointer-events: auto; }
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      background: var(--ink);
+      color: var(--paper);
       font-size: 14px;
       font-weight: 600;
-      text-decoration: none;
+      letter-spacing: -0.02em;
     }
-    .button:hover { color: var(--accent); }
-    .button--primary { background: var(--accent); color: #fff; box-shadow: 0 4px 14px rgba(47, 98, 230, 0.35); }
-    .button--primary:hover { background: #2554cf; color: #fff; }
-    .button svg { flex: none; }
+    nav { font-size: 16px; font-weight: 500; }
+    nav a { color: var(--ink); transition: color 0.2s; }
+    nav a:hover { color: var(--grey); }
 
-    h2.section { margin: 64px 0 18px; color: var(--ink-3); font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
-    .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-    .project { display: flex; flex-direction: column; overflow: hidden; border-radius: 20px; background: var(--surface); box-shadow: var(--shadow); }
-    .project__shot { display: block; aspect-ratio: 16 / 10; overflow: hidden; background: var(--wash); border-bottom: 1px solid #e6eaf5; }
-    .project__shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: transform 0.4s ease; }
-    .project__shot:hover img { transform: scale(1.025); }
-    .project__body { display: flex; flex-direction: column; flex: 1; padding: 22px 24px 24px; }
-    .project h3 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.015em; }
-    .project p { margin: 8px 0 0; color: var(--ink-2); font-size: 15px; }
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 0; padding: 0; list-style: none; }
-    .tags li { padding: 3px 10px; border-radius: 999px; background: var(--accent-wash); color: var(--accent); font-size: 12px; font-weight: 700; }
-    .project .links { margin-top: auto; padding-top: 20px; }
+    /* ---- hero: the name in the middle, the work scattered around it ---- */
+    .hero { position: relative; height: 100vh; height: 100svh; min-height: 560px; overflow: hidden; }
+    .name {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 2;
+      margin: 0;
+      translate: -50% -50%;
+      font-size: clamp(56px, 10.5vw, 168px);
+      font-weight: 500;
+      letter-spacing: -0.065em;
+      line-height: 1;
+      white-space: nowrap;
+      mix-blend-mode: multiply;
+    }
+    .name span { color: var(--grey); }
+    .tagline {
+      position: absolute;
+      left: var(--gutter);
+      bottom: var(--gutter);
+      z-index: 2;
+      max-width: 240px;
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+    .scroll-hint { position: absolute; right: var(--gutter); bottom: var(--gutter); z-index: 2; font-size: 13px; color: var(--grey); }
 
-    footer { margin-top: 56px; color: var(--ink-3); font-size: 13px; }
+    .shot { position: absolute; z-index: 1; display: block; will-change: transform; }
+    .shot img { width: 100%; filter: grayscale(1) contrast(1.05); opacity: 0.92; transition: filter 0.5s, opacity 0.5s; }
+    .shot:hover img, .shot:focus-visible img { filter: none; opacity: 1; }
+    .s1 { width: 19vw; left: 7vw;  top: 15vh; }
+    .s2 { width: 10vw; left: 72vw; top: 11vh; }
+    .s3 { width: 9vw;  left: 84vw; top: 50vh; }
+    .s4 { width: 23vw; left: 40vw; top: 73vh; }
+    .s5 { width: 5vw;  left: 18vw; top: 66vh; }
+    .s6 { width: 14vw; left: 45vw; top: 10vh; }
+
+    /* ---- the work: an index, one row per project ---- */
+    .section { position: relative; z-index: 1; padding: 18vh var(--gutter) 0; }
+    .projects:hover .project:not(:hover) { opacity: 0.3; }
+    .label { display: flex; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid var(--ink); font-size: 13px; }
+    .project {
+      display: grid;
+      grid-template-columns: 56px minmax(0, 1fr) auto;
+      align-items: baseline;
+      gap: 20px;
+      padding: 26px 0 30px;
+      border-bottom: 1px solid var(--rule);
+      transition: opacity 0.3s;
+    }
+    .project__num { color: var(--grey); font-size: 13px; }
+    .project__title { font-size: clamp(30px, 4.4vw, 64px); font-weight: 500; letter-spacing: -0.05em; line-height: 1; }
+    .project__text { margin: 12px 0 0; max-width: 46ch; color: var(--grey); font-size: 15px; }
+    .project__kind { margin: 14px 0 0; font-size: 13px; }
+    .project__kind span { color: var(--grey); }
+    .project__links { display: flex; gap: 16px; font-size: 13px; font-weight: 500; white-space: nowrap; }
+    .project__links a { border-bottom: 1px solid currentColor; }
+    .project__links a:hover { color: var(--grey); }
+    .project__still { display: none; }
+
+    /* The picture that follows the pointer over a project's row. */
+    .preview {
+      position: fixed;
+      left: 54vw;
+      top: 0;
+      z-index: 5;
+      width: min(28vw, 420px);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .preview.is-on { opacity: 1; }
+
+    .about { padding: 22vh var(--gutter) 0; }
+    .about p { max-width: 22ch; margin: 0; font-size: clamp(28px, 4vw, 58px); font-weight: 500; letter-spacing: -0.045em; line-height: 1.05; }
+    .about p span { color: var(--grey); }
+
+    footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 22vh;
+      padding: var(--gutter);
+      border-top: 1px solid var(--rule);
+      font-size: 13px;
+    }
+    footer a { border-bottom: 1px solid currentColor; }
 
     @media (max-width: 760px) {
-      .page { padding: 44px 16px 40px; }
-      .projects { grid-template-columns: 1fr; }
-      .intro { font-size: 16px; }
-      h2.section { margin-top: 44px; }
+      .s1 { width: 46vw; left: 4vw;  top: 20vh; }
+      .s2 { width: 26vw; left: 68vw; top: 17vh; }
+      .s3 { width: 28vw; left: 66vw; top: 59vh; }
+      .s4 { width: 56vw; left: 6vw;  top: 81vh; }
+      .s5, .s6 { display: none; }
+      .tagline { bottom: auto; top: calc(var(--gutter) + 52px); }
+      .scroll-hint { display: none; }
+      .project { grid-template-columns: 1fr; gap: 10px; padding: 22px 0 28px; }
+      .project__num { order: -1; }
+      .project__still { display: block; margin: 8px 0 4px; filter: grayscale(1); }
+      .preview { display: none; }
     }
+    @media (hover: none) { .preview { display: none; } }
     @media (prefers-reduced-motion: reduce) {
-      .project__shot img { transition: none; }
+      html { scroll-behavior: auto; }
+      .shot img, .preview { transition: none; }
     }
   </style>
 </head>
 <body>
-  <main class="page">
-    <header>
-      <h1>Ben Voliva</h1>
-      <p class="intro">I build interactive web tools that turn real data into something you can explore.</p>
-      <div class="links">
-        <a class="button" href="https://github.com/BenVoliva" target="_blank" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.6 18.3 5 18.3 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>
-          GitHub
-        </a>
+  <header class="top">
+    <a class="mark" href="#top" aria-label="Ben Voliva, back to the top">BV</a>
+    <nav aria-label="Main">
+      <a href="#work">work,</a>
+      <a href="#about">about,</a>
+      <a href="https://github.com/BenVoliva" target="_blank" rel="noopener">github.</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-label="Introduction">
+      <h1 class="name"><span>ben</span>voliva</h1>
+      <p class="tagline">Interactive web tools built from real data: shipping, markets, food.</p>
+      <a class="scroll-hint" href="#work">selected work ↓</a>
+
+      <a class="shot s1" data-speed="-0.12" href="https://benvoliva.github.io/chokepoint-monitor/" target="_blank" rel="noopener" aria-label="Chokepoint Monitor: the map">
+        <img src="images/cm-map.jpg" alt="Ships on a 3D map passing Suez, Hormuz, Bab el-Mandeb and Malacca" width="900" height="540"></a>
+      <a class="shot s2" data-speed="0.18" href="https://benvoliva.github.io/Ramen-Bowl-Builder/" target="_blank" rel="noopener" aria-label="Ramen Bowl Builder: the bowl">
+        <img src="images/rb-bowl.jpg" alt="An illustrated bowl of ramen with chashu, egg and noodles" width="600" height="567"></a>
+      <a class="shot s3" data-speed="-0.06" href="https://benvoliva.github.io/chokepoint-monitor/" target="_blank" rel="noopener" aria-label="Chokepoint Monitor: the weekly summary">
+        <img src="images/cm-summary.jpg" alt="A card summing up the week's ship traffic at six chokepoints" width="560" height="724"></a>
+      <a class="shot s4" data-speed="0.1" href="https://benvoliva.github.io/chokepoint-monitor/" target="_blank" rel="noopener" aria-label="Chokepoint Monitor: the chart">
+        <img src="images/cm-chart.jpg" alt="A chart of six chokepoints' traffic against normal since 2019" width="1100" height="254"></a>
+      <a class="shot s5" data-speed="0.24" href="https://benvoliva.github.io/chokepoint-monitor/" target="_blank" rel="noopener" aria-label="Chokepoint Monitor: the logo">
+        <img src="images/cm-logo.png" alt="The Chokepoint Monitor logo, a gauge over water" width="512" height="512"></a>
+      <a class="shot s6" data-speed="-0.2" href="https://benvoliva.github.io/Ramen-Bowl-Builder/" target="_blank" rel="noopener" aria-label="Ramen Bowl Builder: the broth scores">
+        <img src="images/rb-index.jpg" alt="Gelatin and flavor scores for a ramen broth" width="900" height="274"></a>
+    </section>
+
+    <section class="section" id="work" aria-label="Selected work">
+      <div class="label"><span>selected work</span><span>(02)</span></div>
+      <div class="projects">
+
+      <article class="project" data-preview="images/chokepoint-monitor.jpg">
+        <span class="project__num">01</span>
+        <div>
+          <a class="project__title" href="https://benvoliva.github.io/chokepoint-monitor/" target="_blank" rel="noopener">chokepoint monitor</a>
+          <img class="project__still" src="images/chokepoint-monitor.jpg" alt="" width="1200" height="750" loading="lazy">
+          <p class="project__text">Daily ship traffic through Suez, Hormuz, Panama and Malacca since 2019, on a 3D world map, with the events that moved it, oil prices alongside, and data and headlines that update themselves every day.</p>
+          <p class="project__kind">data visualisation, 3d map, python pipeline <span>· 2026</span></p>
+        </div>
+        <span class="project__links">
+          <a href="https://benvoliva.github.io/chokepoint-monitor/" target="_blank" rel="noopener">live ↗</a>
+          <a href="https://github.com/BenVoliva/chokepoint-monitor" target="_blank" rel="noopener">code ↗</a>
+        </span>
+      </article>
+
+      <article class="project" data-preview="images/ramen-bowl-builder.jpg">
+        <span class="project__num">02</span>
+        <div>
+          <a class="project__title" href="https://benvoliva.github.io/Ramen-Bowl-Builder/" target="_blank" rel="noopener">ramen bowl builder</a>
+          <img class="project__still" src="images/ramen-bowl-builder.jpg" alt="" width="1200" height="750" loading="lazy">
+          <p class="project__text">Build a bowl of ramen from the bones up. Pick broth parts, aromatics, tare and toppings, and it recalculates the gelatin and flavor balance, salt, umami and a shopping list as you go.</p>
+          <p class="project__kind">interactive calculator, recipe modelling <span>· 2026</span></p>
+        </div>
+        <span class="project__links">
+          <a href="https://benvoliva.github.io/Ramen-Bowl-Builder/" target="_blank" rel="noopener">live ↗</a>
+          <a href="https://github.com/BenVoliva/Ramen-Bowl-Builder" target="_blank" rel="noopener">code ↗</a>
+        </span>
+      </article>
       </div>
-    </header>
+    </section>
 
-    <h2 class="section">Projects</h2>
-    <div class="projects">
-      <article class="project">
-        <a class="project__shot" href="https://benvoliva.github.io/chokepoint-monitor/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-          <img src="images/chokepoint-monitor.jpg" alt="" width="1200" height="750" loading="lazy">
-        </a>
-        <div class="project__body">
-          <h3>Chokepoint Monitor</h3>
-          <p>Daily ship traffic through Suez, Hormuz, Panama and Malacca since 2019, on a 3D world map. Each chokepoint is measured against its normal level, with the events that moved it, oil prices alongside, and data and news headlines that update themselves every day.</p>
-          <ul class="tags"><li>Data visualisation</li><li>3D map</li><li>Python data pipeline</li><li>Automated daily updates</li></ul>
-          <div class="links">
-            <a class="button button--primary" href="https://benvoliva.github.io/chokepoint-monitor/" target="_blank" rel="noopener">See it live</a>
-            <a class="button" href="https://github.com/BenVoliva/chokepoint-monitor" target="_blank" rel="noopener">Code</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="project">
-        <a class="project__shot" href="https://benvoliva.github.io/Ramen-Bowl-Builder/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-          <img src="images/ramen-bowl-builder.jpg" alt="" width="1200" height="750" loading="lazy">
-        </a>
-        <div class="project__body">
-          <h3>Ramen Bowl Builder</h3>
-          <p>Build a bowl of ramen from the bones up. Pick broth parts, aromatics, tare and toppings, and it recalculates the gelatin and flavor balance, salt, umami and a combined shopping list as you go.</p>
-          <ul class="tags"><li>Interactive calculator</li><li>Recipe modelling</li><li>HTML, CSS, JavaScript</li></ul>
-          <div class="links">
-            <a class="button button--primary" href="https://benvoliva.github.io/Ramen-Bowl-Builder/" target="_blank" rel="noopener">See it live</a>
-            <a class="button" href="https://github.com/BenVoliva/Ramen-Bowl-Builder" target="_blank" rel="noopener">Code</a>
-          </div>
-        </div>
-      </article>
-    </div>
-
-    <footer>© 2026 Ben Voliva</footer>
+    <section class="about" id="about" aria-label="About">
+      <p>I build tools that turn real data into something you can explore. <span>From the ships squeezing through the world’s narrowest sea lanes to the chemistry of a good bowl of ramen.</span></p>
+    </section>
   </main>
+
+  <footer>
+    <span>© 2026 Ben Voliva</span>
+    <a href="https://github.com/BenVoliva" target="_blank" rel="noopener">github ↗</a>
+    <a href="#top">back to top ↑</a>
+  </footer>
+
+  <img class="preview" id="preview" alt="" aria-hidden="true">
+
+  <script>
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // The scattered pictures drift at their own speeds as the page scrolls.
+    const shots = [...document.querySelectorAll('[data-speed]')];
+    let queued = false;
+    function drift() {
+      queued = false;
+      const y = window.scrollY;
+      for (const shot of shots) shot.style.transform = `translate3d(0, ${(y * shot.dataset.speed).toFixed(1)}px, 0)`;
+    }
+    if (!still) addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(drift); } }, { passive: true });
+
+    // Over a project's row, a picture of it shows in the row's empty right half, easing up and down with the pointer.
+    const preview = document.getElementById('preview');
+    let at = { x: 0, y: 0 }, shown = { x: 0, y: 0 }, moving = false;
+    function follow() {
+      const k = still ? 1 : 0.16;
+      shown.x += (at.x - shown.x) * k;
+      shown.y += (at.y - shown.y) * k;
+      preview.style.transform = `translate3d(0, ${(shown.y - preview.offsetHeight / 2).toFixed(1)}px, 0)`;   // across: fixed in the row's empty right half
+      moving = Math.abs(at.x - shown.x) + Math.abs(at.y - shown.y) > 0.5;
+      if (moving) requestAnimationFrame(follow);
+    }
+    for (const row of document.querySelectorAll('[data-preview]')) {
+      row.addEventListener('pointerenter', (e) => {
+        if (e.pointerType !== 'mouse') return;
+        preview.src = row.dataset.preview;
+        shown = { x: e.clientX, y: e.clientY };
+        preview.classList.add('is-on');
+      });
+      row.addEventListener('pointerleave', () => preview.classList.remove('is-on'));
+    }
+    addEventListener('pointermove', (e) => {
+      at = { x: e.clientX, y: e.clientY };
+      if (!moving) { moving = true; requestAnimationFrame(follow); }
+    }, { passive: true });
+  </script>
 </body>
 </html>
