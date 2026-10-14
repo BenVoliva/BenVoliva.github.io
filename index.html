@@ -59,47 +59,20 @@
     nav a { color: var(--ink); transition: color 0.2s; }
     nav a:hover { color: var(--grey); }
 
-    /* ---- hero: the name in the middle, the work scattered around it ---- */
-    .hero { position: relative; height: 100vh; height: 100svh; min-height: 560px; overflow: hidden; }
+    /* ---- the name, then the work ---- */
+    .intro { padding: calc(var(--gutter) + 120px) var(--gutter) 0; }
     .name {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      z-index: 2;
       margin: 0;
-      translate: -50% -50%;
-      font-size: clamp(56px, 10.5vw, 168px);
+      font-size: clamp(56px, 12vw, 190px);
       font-weight: 500;
       letter-spacing: -0.065em;
-      line-height: 1;
+      line-height: 0.95;
       white-space: nowrap;
-      mix-blend-mode: multiply;
     }
     .name span { color: var(--grey); }
-    .tagline {
-      position: absolute;
-      left: var(--gutter);
-      bottom: var(--gutter);
-      z-index: 2;
-      max-width: 240px;
-      margin: 0;
-      font-size: 13px;
-      line-height: 1.35;
-    }
-    .scroll-hint { position: absolute; right: var(--gutter); bottom: var(--gutter); z-index: 2; font-size: 13px; color: var(--grey); }
-
-    .shot { position: absolute; z-index: 1; display: block; will-change: transform; }
-    .shot img { width: 100%; filter: grayscale(1) contrast(1.05); opacity: 0.92; transition: filter 0.5s, opacity 0.5s; }
-    .shot:hover img, .shot:focus-visible img { filter: none; opacity: 1; }
-    .s1 { width: 19vw; left: 7vw;  top: 15vh; }
-    .s2 { width: 10vw; left: 72vw; top: 11vh; }
-    .s3 { width: 9vw;  left: 84vw; top: 50vh; }
-    .s4 { width: 23vw; left: 40vw; top: 73vh; }
-    .s5 { width: 5vw;  left: 18vw; top: 66vh; }
-    .s6 { width: 14vw; left: 45vw; top: 10vh; }
 
     /* ---- the work: an index, one row per project ---- */
-    .section { position: relative; z-index: 1; padding: 18vh var(--gutter) 0; }
+    .section { position: relative; z-index: 1; padding: 14vh var(--gutter) 0; }
     .projects:hover .project:not(:hover) { opacity: 0.3; }
     .label { display: flex; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid var(--ink); font-size: 13px; }
     .project {
@@ -134,16 +107,12 @@
     }
     .preview.is-on { opacity: 1; }
 
-    .about { padding: 22vh var(--gutter) 0; }
-    .about p { max-width: 22ch; margin: 0; font-size: clamp(28px, 4vw, 58px); font-weight: 500; letter-spacing: -0.045em; line-height: 1.05; }
-    .about p span { color: var(--grey); }
-
     footer {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       gap: 12px;
-      margin-top: 22vh;
+      margin-top: 18vh;
       padding: var(--gutter);
       border-top: 1px solid var(--rule);
       font-size: 13px;
@@ -151,13 +120,7 @@
     footer a { border-bottom: 1px solid currentColor; }
 
     @media (max-width: 760px) {
-      .s1 { width: 46vw; left: 4vw;  top: 20vh; }
-      .s2 { width: 26vw; left: 68vw; top: 17vh; }
-      .s3 { width: 28vw; left: 66vw; top: 59vh; }
-      .s4 { width: 56vw; left: 6vw;  top: 81vh; }
-      .s5, .s6 { display: none; }
-      .tagline { bottom: auto; top: calc(var(--gutter) + 52px); }
-      .scroll-hint { display: none; }
+      .intro { padding-top: calc(var(--gutter) + 90px); }
       .project { grid-template-columns: 1fr; gap: 10px; padding: 22px 0 28px; }
       .project__num { order: -1; }
       .project__still { display: block; margin: 8px 0 4px; filter: grayscale(1); }
@@ -166,7 +129,7 @@
     @media (hover: none) { .preview { display: none; } }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .shot img, .preview { transition: none; }
+      .preview { transition: none; }
     }
   </style>
 </head>
@@ -175,29 +138,13 @@
     <a class="mark" href="#top" aria-label="Ben Voliva, back to the top">BV</a>
     <nav aria-label="Main">
       <a href="#work">work,</a>
-      <a href="#about">about,</a>
       <a href="https://github.com/BenVoliva" target="_blank" rel="noopener">github.</a>
     </nav>
   </header>
 
   <main id="top">
-    <section class="hero" aria-label="Introduction">
+    <section class="intro" aria-label="Introduction">
       <h1 class="name"><span>ben</span>voliva</h1>
-      <p class="tagline">Interactive web tools built from real data: shipping, markets, food.</p>
-      <a class="scroll-hint" href="#work">selected work ↓</a>
-
-      <a class="shot s1" data-speed="-0.12" href="https://benvoliva.github.io/chokepoint-monitor/" target="_blank" rel="noopener" aria-label="Chokepoint Monitor: the map">
-        <img src="images/cm-map.jpg" alt="Ships on a 3D map passing Suez, Hormuz, Bab el-Mandeb and Malacca" width="900" height="540"></a>
-      <a class="shot s2" data-speed="0.18" href="https://benvoliva.github.io/Ramen-Bowl-Builder/" target="_blank" rel="noopener" aria-label="Ramen Bowl Builder: the bowl">
-        <img src="images/rb-bowl.jpg" alt="An illustrated bowl of ramen with chashu, egg and noodles" width="600" height="567"></a>
-      <a class="shot s3" data-speed="-0.06" href="https://benvoliva.github.io/chokepoint-monitor/" target="_blank" rel="noopener" aria-label="Chokepoint Monitor: the weekly summary">
-        <img src="images/cm-summary.jpg" alt="A card summing up the week's ship traffic at six chokepoints" width="560" height="724"></a>
-      <a class="shot s4" data-speed="0.1" href="https://benvoliva.github.io/chokepoint-monitor/" target="_blank" rel="noopener" aria-label="Chokepoint Monitor: the chart">
-        <img src="images/cm-chart.jpg" alt="A chart of six chokepoints' traffic against normal since 2019" width="1100" height="254"></a>
-      <a class="shot s5" data-speed="0.24" href="https://benvoliva.github.io/chokepoint-monitor/" target="_blank" rel="noopener" aria-label="Chokepoint Monitor: the logo">
-        <img src="images/cm-logo.png" alt="The Chokepoint Monitor logo, a gauge over water" width="512" height="512"></a>
-      <a class="shot s6" data-speed="-0.2" href="https://benvoliva.github.io/Ramen-Bowl-Builder/" target="_blank" rel="noopener" aria-label="Ramen Bowl Builder: the broth scores">
-        <img src="images/rb-index.jpg" alt="Gelatin and flavor scores for a ramen broth" width="900" height="274"></a>
     </section>
 
     <section class="section" id="work" aria-label="Selected work">
@@ -234,9 +181,6 @@
       </div>
     </section>
 
-    <section class="about" id="about" aria-label="About">
-      <p>I build tools that turn real data into something you can explore. <span>From the ships squeezing through the world’s narrowest sea lanes to the chemistry of a good bowl of ramen.</span></p>
-    </section>
   </main>
 
   <footer>
@@ -249,16 +193,6 @@
 
   <script>
     const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // The scattered pictures drift at their own speeds as the page scrolls.
-    const shots = [...document.querySelectorAll('[data-speed]')];
-    let queued = false;
-    function drift() {
-      queued = false;
-      const y = window.scrollY;
-      for (const shot of shots) shot.style.transform = `translate3d(0, ${(y * shot.dataset.speed).toFixed(1)}px, 0)`;
-    }
-    if (!still) addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(drift); } }, { passive: true });
 
     // Over a project's row, a picture of it shows in the row's empty right half, easing up and down with the pointer.
     const preview = document.getElementById('preview');
